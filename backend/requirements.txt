@@ -1,0 +1,6 @@
+fastapi
+fastapi-admin
+sqlalchemy
+pydantic
+uvicorn
+setuptools
