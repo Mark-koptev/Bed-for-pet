@@ -1,25 +1,12 @@
-# app/admin.py
-from fastapi_admin.app import app as admin_app
-from fastapi_admin.widgets import inputs
-from fastapi_admin.models import AbstractAdmin
-
-from models.user import User
-
-admin_app.configure(
-    templates_dir="./app/templates",
-    database_url="sqlite+aiosqlite:///./test.db",
-)
+from sqladmin import Admin, ModelView
+from database.database import engine
+from models.user import User1
 
 
-class UserAdmin(AbstractAdmin):
-    model = User
-    search_fields = [User.username]
-    fields = [
-        inputs.Input('username'),
-        inputs.Input('email'),
-        inputs.Input('full_name'),
-        inputs.Input('hashed_password'),
-    ]
+class UserAdmin(ModelView, model=User1):
+    column_list = "__all__"
 
 
-admin_app.register(UserAdmin)
+def init_admin_app(app):
+    admin = Admin(app, engine)
+    admin.add_view(UserAdmin)
